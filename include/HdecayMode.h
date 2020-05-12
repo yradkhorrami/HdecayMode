@@ -2,6 +2,7 @@
 #define HdecayMode_h 1
 
 #include "marlin/Processor.h"
+#include "IMPL/LCCollectionVec.h"
 #include "lcio.h"
 #include <string>
 #include <TFile.h>
@@ -15,5 +16,38 @@ class TTree;
 
 using namespace lcio ;
 using namespace marlin ;
+class HdecayMode : public Processor
+{
+	public:
+
+		virtual Processor*  newProcessor()
+		{
+			return new HdecayMode;
+		}
+		HdecayMode();
+		virtual ~HdecayMode() = default;
+		HdecayMode(const HdecayMode&) = delete;
+		HdecayMode& operator=(const HdecayMode&) = delete;
+		virtual void init();
+		virtual void processRunHeader();
+		virtual void processEvent( EVENT::LCEvent *pLCEvent );
+		virtual void check();
+		virtual void end();
+		void Clear();
+
+	private:
+
+		typedef std::vector<int>		IntVector;
+		typedef std::vector<double>		DoubleVector;
+		typedef std::vector<float>		FloatVector;
+
+		std::string				m_mcParticleCollection{};
+		std::string				m_HdecayModeCollection{};
+		LCCollectionVec				*m_col_HDecayMode{};
+		int					m_isDecayedTob;
+		int					m_isDecayedToc;
+		int					m_isDecayedToother;
+		float					m_ISREnergy;
+};
 
 #endif
