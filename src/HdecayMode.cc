@@ -17,7 +17,14 @@ HdecayMode::HdecayMode() :
 	m_isDecayedTob(0),
 	m_isDecayedToc(0),
 	m_isDecayedToother(0),
-	m_ISREnergy(0.f)
+	m_ISR1Energy(0.f),
+	m_ISR1Px(0.f),
+	m_ISR1Py(0.f),
+	m_ISR1Pz(0.f),
+	m_ISR2Energy(0.f),
+	m_ISR2Px(0.f),
+	m_ISR2Py(0.f),
+	m_ISR2Pz(0.f)
 {
 
 	_description = "HdecayMode identifies Higgs decay mode and finds ISR in generator level" ;
@@ -44,7 +51,14 @@ void HdecayMode::init()
 	m_isDecayedTob = 0;
 	m_isDecayedToc = 0;
 	m_isDecayedToother = 0;
-	m_ISREnergy = 0.;
+	m_ISR1Energy = 0.;
+	m_ISR1Px = 0.;
+	m_ISR1Py = 0.;
+	m_ISR1Pz = 0.;
+	m_ISR2Energy = 0.;
+	m_ISR2Px = 0.;
+	m_ISR2Py = 0.;
+	m_ISR2Pz = 0.;
 	this->Clear();
 
 }
@@ -54,7 +68,14 @@ void HdecayMode::Clear()
 	m_isDecayedTob = 0;
 	m_isDecayedToc = 0;
 	m_isDecayedToother = 0;
-	m_ISREnergy = 0.;
+	m_ISR1Energy = 0.;
+	m_ISR1Px = 0.;
+	m_ISR1Py = 0.;
+	m_ISR1Pz = 0.;
+	m_ISR2Energy = 0.;
+	m_ISR2Px = 0.;
+	m_ISR2Py = 0.;
+	m_ISR2Pz = 0.;
 }
 
 void HdecayMode::processRunHeader()
@@ -93,17 +114,30 @@ void HdecayMode::processEvent( LCEvent *pLCEvent )
 			}
 			if ( pMCParticle->getPDG() == 22 && (pMCParticle->getParents()).size() == 1 && abs((pMCParticle->getParents()[0])->getPDG()) == 11 )
 			{
-				if ( i == 6 || i == 7 )
+				if ( i == 6 )
 				{
-					m_ISREnergy += pMCParticle->getEnergy();
+					m_ISR1Energy = pMCParticle->getEnergy();
+					m_ISR1Px = pMCParticle->getMomentum()[0];
+					m_ISR1Py = pMCParticle->getMomentum()[1];
+					m_ISR1Pz = pMCParticle->getMomentum()[2];
+				}
+				if ( i == 7 )
+				{
+					m_ISR2Energy = pMCParticle->getEnergy();
+					m_ISR2Px = pMCParticle->getMomentum()[0];
+					m_ISR2Py = pMCParticle->getMomentum()[1];
+					m_ISR2Pz = pMCParticle->getMomentum()[2];
 				}
 			}
 		}
-		streamlog_out(DEBUG) << "ISR energy is " << m_ISREnergy << " GeV" << std::endl;
+		streamlog_out(DEBUG) << "ISR energy is " << m_ISR1Energy << " GeV" << std::endl;
 		m_col_HDecayMode->parameters().setValue("isDecayedTob", (int)m_isDecayedTob);		
 		m_col_HDecayMode->parameters().setValue("isDecayedToc", (int)m_isDecayedToc);		
-		m_col_HDecayMode->parameters().setValue("isDecayedToc", (int)m_isDecayedToother);		
-		m_col_HDecayMode->parameters().setValue("ISREnergy", (float)m_ISREnergy);
+		m_col_HDecayMode->parameters().setValue("isDecayedToother", (int)m_isDecayedToother);		
+		m_col_HDecayMode->parameters().setValue("ISR1Energy", (float)m_ISR1Energy);
+		m_col_HDecayMode->parameters().setValue("ISR1Px", (float)m_ISR1Px);
+		m_col_HDecayMode->parameters().setValue("ISR1Py", (float)m_ISR1Py);
+		m_col_HDecayMode->parameters().setValue("ISR1Pz", (float)m_ISR1Pz);
 		pLCEvent->addCollection(m_col_HDecayMode, m_HdecayModeCollection);		
 	}
 	catch(...)

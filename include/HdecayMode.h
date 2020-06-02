@@ -47,7 +47,14 @@ class HdecayMode : public Processor
 		int					m_isDecayedTob;
 		int					m_isDecayedToc;
 		int					m_isDecayedToother;
-		float					m_ISREnergy;
+		float					m_ISR1Energy;
+		float					m_ISR1Px;
+		float					m_ISR1Py;
+		float					m_ISR1Pz;
+		float					m_ISR2Energy;
+		float					m_ISR2Px;
+		float					m_ISR2Py;
+		float					m_ISR2Pz;
 };
 
 #endif
