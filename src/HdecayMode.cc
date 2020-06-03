@@ -138,6 +138,10 @@ void HdecayMode::processEvent( LCEvent *pLCEvent )
 		m_col_HDecayMode->parameters().setValue("ISR1Px", (float)m_ISR1Px);
 		m_col_HDecayMode->parameters().setValue("ISR1Py", (float)m_ISR1Py);
 		m_col_HDecayMode->parameters().setValue("ISR1Pz", (float)m_ISR1Pz);
+		m_col_HDecayMode->parameters().setValue("ISR2Energy", (float)m_ISR2Energy);
+		m_col_HDecayMode->parameters().setValue("ISR2Px", (float)m_ISR2Px);
+		m_col_HDecayMode->parameters().setValue("ISR2Py", (float)m_ISR2Py);
+		m_col_HDecayMode->parameters().setValue("ISR2Pz", (float)m_ISR2Pz);
 		pLCEvent->addCollection(m_col_HDecayMode, m_HdecayModeCollection);		
 	}
 	catch(...)
